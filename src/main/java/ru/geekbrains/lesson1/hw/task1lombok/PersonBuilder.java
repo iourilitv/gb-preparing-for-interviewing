@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson1.hw.task1;
+package ru.geekbrains.lesson1.hw.task1lombok;
 
 import java.util.logging.Logger;
 

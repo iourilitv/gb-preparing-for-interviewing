@@ -1,5 +1,7 @@
 package ru.geekbrains.lesson1.hw.task1;
 
+import ru.geekbrains.lesson1.hw.task1lombok.Genders;
+
 /**
  * Hw for lesson 1.
  * @Author Litvinenko Yuriy
@@ -9,8 +11,15 @@ package ru.geekbrains.lesson1.hw.task1;
  */
 public class Task1 {
     public static void main(String[] args) {
-        PersonBuilder personBuilder = new PersonBuilder();
-        Person person = personBuilder.createNewPerson("Yuriy", "Litvinenko", "Semenovich", 55,
-                Genders.Male.name(), "Russia", "Senina, 44", "+7 999 999-99-99");
+        Person person = new Person.Builder()
+                .firstName("Yuriy")
+                .lastName("Litvinenko")
+                .middleName("Semenovich")
+                .age(55)
+                .gender(Genders.Male.name())
+                .country("Russia")
+                .address("Senina, 44")
+                .phone("+7 999 999-99-99")
+                .build();
     }
 }
