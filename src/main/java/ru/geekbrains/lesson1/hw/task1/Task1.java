@@ -2,6 +2,8 @@ package ru.geekbrains.lesson1.hw.task1;
 
 import ru.geekbrains.lesson1.hw.task1lombok.Genders;
 
+import java.util.logging.Logger;
+
 /**
  * Hw for lesson 1.
  * @Author Litvinenko Yuriy
@@ -10,6 +12,8 @@ import ru.geekbrains.lesson1.hw.task1lombok.Genders;
  *    int age, String gender.
  */
 public class Task1 {
+    static Logger log = Logger.getLogger(Task1.class.getName());
+
     public static void main(String[] args) {
         Person person = new Person.Builder()
                 .firstName("Yuriy")
@@ -21,5 +25,8 @@ public class Task1 {
                 .address("Senina, 44")
                 .phone("+7 999 999-99-99")
                 .build();
+
+        log.info(person.toString());
+        log.info(person.getFirstName());
     }
 }
