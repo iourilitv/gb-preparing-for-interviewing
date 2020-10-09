@@ -1,38 +1,27 @@
 package ru.geekbrains.lesson1.hw.task2;
 
-abstract class Car {
-    public Engine engine ;
-    private String color ;
-    private String name ;
-
-    protected void start () {
-        System.out.println("Car starting");
+//replaced
+//class LightWeightCar extends Car implements Moveable {
+class Car extends Vehicle {
+    //added
+    public Car(Engine engine, String color, String name) {
+        super(engine, color, name);
     }
 
-    abstract void open ();
-
-    public Engine getEngine () {
-        return engine ;
+    @Override
+    void open () {
+        System . out . println ( "Car is open" );
     }
 
-    public void setEngine ( Engine engine ) {
-        this . engine = engine ;
+    @Override
+    void close() {
+        System.out.println ( "Car is closed" );
     }
 
-    public String getColor () {
-        return color ;
-    }
-
-    public void setColor ( String color ) {
-        this . color = color ;
-    }
-
-    public String getName () {
-        return name ;
-    }
-
-    public void setName ( String name ) {
-        this . name = name ;
-    }
+    //deleted
+//    @Override
+//    public void move () {
+//        System . out . println ( "Car is moving" );
+//    }
 
 }
