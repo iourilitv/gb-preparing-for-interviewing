@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson1.hw.task1;
+package ru.geekbrains.lesson1.hw.task1.classbook;
 
 public class Person {
     private String firstName;
@@ -10,15 +10,16 @@ public class Person {
     private String address;
     private String phone;
 
+    //TODO Пример из методички(закоментировано) не работает - все поля у person - null
     public static class Builder {
-        private String firstName;
-        private String lastName;
-        private String middleName;
-        private int age;
-        private String gender;
-        private String country;
-        private String address;
-        private String phone;
+//        private String firstName;
+//        private String lastName;
+//        private String middleName;
+//        private int age;
+//        private String gender;
+//        private String country;
+//        private String address;
+//        private String phone;
 
         private final Person person = new Person();
 
@@ -109,6 +110,38 @@ public class Person {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

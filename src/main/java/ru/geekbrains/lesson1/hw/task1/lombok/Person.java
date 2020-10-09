@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson1.hw.task1lombok;
+package ru.geekbrains.lesson1.hw.task1.lombok;
 
 import lombok.Builder;
 

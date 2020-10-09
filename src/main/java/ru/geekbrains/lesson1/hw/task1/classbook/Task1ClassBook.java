@@ -1,6 +1,6 @@
-package ru.geekbrains.lesson1.hw.task1;
+package ru.geekbrains.lesson1.hw.task1.classbook;
 
-import ru.geekbrains.lesson1.hw.task1lombok.Genders;
+import ru.geekbrains.lesson1.hw.task1.lombok.Genders;
 
 import java.util.logging.Logger;
 
@@ -11,8 +11,8 @@ import java.util.logging.Logger;
  *    String firstName, String lastName, String middleName, String country, String address, String phone,
  *    int age, String gender.
  */
-public class Task1 {
-    static Logger log = Logger.getLogger(Task1.class.getName());
+public class Task1ClassBook {
+    private static final Logger log = Logger.getLogger(Task1ClassBook.class.getName());
 
     public static void main(String[] args) {
         Person person = new Person.Builder()

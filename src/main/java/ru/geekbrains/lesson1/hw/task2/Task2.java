@@ -1,8 +1,8 @@
 package ru.geekbrains.lesson1.hw.task2;
 
-import ru.geekbrains.lesson1.hw.task1lombok.Genders;
-import ru.geekbrains.lesson1.hw.task1lombok.Person;
-import ru.geekbrains.lesson1.hw.task1lombok.PersonBuilder;
+import ru.geekbrains.lesson1.hw.task1.lombok.Genders;
+import ru.geekbrains.lesson1.hw.task1.lombok.Person;
+import ru.geekbrains.lesson1.hw.task1.lombok.PersonBuilder;
 
 /**
  * Hw for lesson 1.
