@@ -1,9 +1,5 @@
 package ru.geekbrains.lesson1.hw.task2;
 
-import ru.geekbrains.lesson1.hw.task1.lombok.Genders;
-import ru.geekbrains.lesson1.hw.task1.lombok.Person;
-import ru.geekbrains.lesson1.hw.task1.lombok.PersonBuilder;
-
 /**
  * Hw for lesson 1.
  * @Author Litvinenko Yuriy
@@ -11,14 +7,12 @@ import ru.geekbrains.lesson1.hw.task1.lombok.PersonBuilder;
  */
 public class Task2 {
     public static void main(String[] args) {
-        PersonBuilder personBuilder = new PersonBuilder();
-        Person person = personBuilder.createNewPerson("Yuriy", "Litvinenko", "Semenovich", 55,
-                Genders.Male.name(), "Russia", "Senina, 44", "+7 999 999-99-99");
+
     }
 }
 
 //interface Moveable {
-//void move ();
+//    void move ();
 //}
 //interface Stopable {
 //void stop ();
@@ -51,6 +45,7 @@ public class Task2 {
 //this . name = name ;
 //}
 //}
+
 //class LightWeightCar extends Car implements Moveable {
 //@Override
 //void open () {
