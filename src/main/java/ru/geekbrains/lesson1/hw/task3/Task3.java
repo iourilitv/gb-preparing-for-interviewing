@@ -1,8 +1,8 @@
 package ru.geekbrains.lesson1.hw.task3;
 
-import ru.geekbrains.lesson1.hw.task1.lombok.Genders;
-import ru.geekbrains.lesson1.hw.task1.lombok.Person;
-import ru.geekbrains.lesson1.hw.task1.lombok.PersonBuilder;
+import ru.geekbrains.lesson1.hw.task1.classbook.Task1ClassBook;
+
+import java.util.logging.Logger;
 
 /**
  * Hw for lesson 1.
@@ -11,9 +11,14 @@ import ru.geekbrains.lesson1.hw.task1.lombok.PersonBuilder;
  * квадрат, треугольник.
  */
 public class Task3 {
+    private static final Logger log = Logger.getLogger(Task1ClassBook.class.getName());
+
     public static void main(String[] args) {
-        PersonBuilder personBuilder = new PersonBuilder();
-        Person person = personBuilder.createNewPerson("Yuriy", "Litvinenko", "Semenovich", 55,
-                Genders.Male.name(), "Russia", "Senina, 44", "+7 999 999-99-99");
+        Circle circle = new Circle(8.0);
+        Square square = new Square(10.0);
+        Triangle triangle = new Triangle(17.0, 12.0);
+
+        log.info("Areas of circle= " + circle.area() + ", square= " + square.area() +
+                ", triangle= " + triangle.area());
     }
 }
