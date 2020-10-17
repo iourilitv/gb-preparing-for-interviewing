@@ -12,8 +12,8 @@ public class ListForKingService {
 
     private final List<Creature> creaturesTemp = new ArrayList<>();
     private final List<Creature> creatures = new ArrayList<>();
-    private final ListForKing listForKing = new ListForKing(creatures);
-    private final Creature king = new Creature("King");
+    private final ListForKing listForKing = new ListForKing();
+    private final Creature king = new Creature("King", creatures);
 
     public ListForKingService(List<String> pollResults) {
         king.setMaster(Creature.emptyObject);
@@ -29,22 +29,15 @@ public class ListForKingService {
                 getCreatureInCreaturesTempByNameOrCreateNewAndAdd(s.trim());
             }
         });
-
-        log.info("*** creaturesTemp= " + creaturesTemp);
     }
 
     private void fillAndSortCreatures() {
         creaturesTemp.forEach(creature -> {
             if(creature.getMaster().equals(Creature.emptyObject)) {
-                bindToMasterOrKing(creature);
-            }
-            if(creature.getMaster().equals(king)) {
-//                log.info("*** king's creature= " + creature);
-//                creature.getServants().sort(CreaturesComparator.getInstance());
-                creatures.add(creature);
+                creature.setMaster(king);
+                king.getServants().add(creature);
             }
         });
-//        creatures.sort(CreaturesComparator.getInstance());
         sortList(creatures);
         log.info("*** creatures= " + creatures);
     }
@@ -55,19 +48,6 @@ public class ListForKingService {
             list.forEach(c -> sortList(c.getServants()));
         }
     }
-
-//    private void sortCreatures() {
-//        Comparator<Creature> comparator = new Comparator<Creature>() {
-//            @Override
-//            public int compare(Creature o1, Creature o2) {
-//                return o1.compareTo(o2);
-//            }
-//        };
-//        creatures.sort(comparator);
-//    }
-//    private void sortCreatures() {
-//        creatures.sort(CreaturesComparator.getInstance());
-//    }
 
     private void extractCreaturesAndAddToCreaturesTemp(String subList) {
         String[] ar = subList.split(PRIMARY_REGEX);
@@ -122,50 +102,9 @@ public class ListForKingService {
         return out;
     }
 
-    private void bindToMasterOrKing(Creature creature) {
-        for (Creature c : creaturesTemp) {
-            if(isListContainsName(c.getServants(), creature.getName())) {
-                creature.setMaster(c);
-                return;
-            }
-        }
-        creature.setMaster(king);
-        king.getServants().add(creature);
-    }
-
-    private boolean isListContainsName(List<Creature> list, String name) {
-        boolean flag = false;
-        for (Creature c : list) {
-            if(c.getName().equals(name)) {
-                flag = true;
-                break;
-            }
-        }
-        return flag;
-    }
-    
-    private Creature getKing() {
-        return king;
-    }
-
-    public List<Creature> getCreatures() {
-        return creatures;
-    }
-
-    public ListForKing getListForKing() {
-        return listForKing;
-    }
-
-//    public String getStringForPrint() {
-//        StringBuilder builder = new StringBuilder("\n" + king.getName() + "\n");
-//        king.getServants().forEach(creature -> {
-//            builder.append("\t").append(creature.getStringForPrint());
-//        });
-//        return builder.toString();
-//    }
     public String getStringForPrint() {
-        return listForKing.getStringForPrint(king);
+        StringBuilder builder = new StringBuilder("\n" + king.getName() + "\n");
+        return listForKing.getStringBuilderForPrint(king.getServants(), builder, 1).toString();
     }
-
 
 }

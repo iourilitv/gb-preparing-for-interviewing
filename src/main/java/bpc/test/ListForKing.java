@@ -3,21 +3,18 @@ package bpc.test;
 import java.util.List;
 
 public class ListForKing {
-    private final List<Creature> creatures;
 
-    public ListForKing(List<Creature> creatures) {
-        this.creatures = creatures;
-    }
-
-    //TODO
-    public String getStringForPrint(Creature creature) {
-        StringBuilder builder = new StringBuilder(creature.getName() + "\n");
-        List<Creature> servants = creature.getServants();
-        if(servants.isEmpty()) {
-            return builder.toString();
-        } else {
-            servants.forEach(c -> builder.append(getStringForPrint(c)));
+    public StringBuilder getStringBuilderForPrint(List<Creature> list, StringBuilder builder, int tabCounter) {
+        for (Creature c: list) {
+            for (int i = 0; i < tabCounter; i++) {
+                builder.append("\t");
+            }
+            builder.append(c.getName()).append("\n");
+            if(!c.getServants().isEmpty()) {
+                getStringBuilderForPrint(c.getServants(), builder, ++tabCounter);
+                tabCounter--;
+            }
         }
-        return builder.toString();
+        return builder;
     }
 }

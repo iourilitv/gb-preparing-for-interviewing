@@ -67,3 +67,30 @@ class UnluckyVassal {
         log.info(service.getStringForPrint());
     }
 }
+//окт 17, 2020 5:59:48 AM bpc.test.ListForKingService fillAndSortCreatures
+//INFO: *** creatures= [Creature{name='аристократ Клаус', master_name=King, servants.size()=0}, Creature{name='дворянин Кузькин', master_name=King, servants.size()=3}, Creature{name='киллер Гена', master_name=King, servants.size()=0}, Creature{name='просветленный Антон', master_name=King, servants.size()=0}, Creature{name='секретарь короля', master_name=King, servants.size()=2}]
+//окт 17, 2020 5:59:48 AM bpc.test.UnluckyVassal printReportForKing
+//INFO:
+//King
+//	аристократ Клаус
+//	дворянин Кузькин
+//		жена Кузькина
+//		управляющий Семен Семеныч
+//			доярка Нюра
+//			крестьянин Федя
+//		экономка Лидия Федоровна
+//			дворник Гена
+//				посыльный Тошка
+//					кот Василий
+//						человеческая особь Катя
+//			служанка Аня
+//	киллер Гена
+//	просветленный Антон
+//	секретарь короля
+//		зажиточный холоп
+//			крестьянка Таня
+//		шпион Т
+//			кучер Д
+//
+//
+//Process finished with exit code 0

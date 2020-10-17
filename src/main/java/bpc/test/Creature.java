@@ -14,11 +14,18 @@ public class Creature implements Comparable<Creature> {
 
     private final String name;
     private Creature master;
-    private final List<Creature> servants = new ArrayList<>();
+    private final List<Creature> servants;
 
     public Creature(String name) {
         this.name = name;
         master = emptyObject;
+        servants = new ArrayList<>();
+    }
+
+    public Creature(String name, List<Creature> servants) {
+        this.name = name;
+        master = emptyObject;
+        this.servants = servants;
     }
 
     @Override
@@ -28,10 +35,6 @@ public class Creature implements Comparable<Creature> {
 
     public Creature getMaster() {
         return master != null ? master : emptyObject;
-    }
-
-    public Creature getEmptyObject() {
-        return emptyObject;
     }
 
     public String getName() {
@@ -62,17 +65,5 @@ public class Creature implements Comparable<Creature> {
                 ", servants.size()=" + servants.size() +
                 '}';
     }
-
-//    public String getStringForPrint(Creature creature) {
-//        StringBuilder builder = new StringBuilder("\n" + creature.name + "\n");
-//        if(creature.getServants().isEmpty()) {
-//            return builder.toString();
-//        } else {
-//            servants.forEach(c -> {
-////                builder.append("\n\t").append(c.name);
-//                getStringForPrint(c);
-//            });
-//        }
-//    }
 
 }
