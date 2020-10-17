@@ -2,7 +2,6 @@ package bpc.test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public class ListForKingService {
@@ -27,13 +26,7 @@ public class ListForKingService {
             if(s.contains(PRIMARY_REGEX)) {
                 extractCreaturesAndAddToCreaturesTemp(s);
             } else {
-
-                //TODO
-                Creature creature = getCreatureByNameOrCreateNew(creaturesTemp, s.trim());
-                if(creature.equals(Creature.emptyObject)) {
-                    creature = new Creature(s.trim());
-                }
-                creaturesTemp.add(creature);
+                getCreatureInCreaturesTempByNameOrCreateNewAndAdd(s.trim());
             }
         });
 
@@ -78,92 +71,49 @@ public class ListForKingService {
 
     private void extractCreaturesAndAddToCreaturesTemp(String subList) {
         String[] ar = subList.split(PRIMARY_REGEX);
+        Creature primary = getCreatureInCreaturesTempByNameOrCreateNewAndAdd(ar[0].trim());
 
-        //TODO
-        Creature primary = getCreatureByNameOrCreateNew(creaturesTemp, ar[0].trim());
-        if(primary.equals(Creature.emptyObject)) {
-            primary = new Creature(ar[0].trim());
-        }
-
-        subList = ar[1].trim();
+                subList = ar[1].trim();
         ar = subList.split(SECONDARY_REGEX);
         for (String name : ar) {
             createServantAndAddToMasterServants(primary, name.trim());
         }
-        creaturesTemp.add(primary);
     }
 
     private void createServantAndAddToMasterServants(Creature master, String name) {
-
-        //TODO
-        Creature creature = getCreatureByNameOrCreateNew(creaturesTemp, name);
-        if(creature.equals(Creature.emptyObject)) {
-            creature = new Creature(name);
-        }
-
+        Creature creature = getCreatureInCreaturesTempByNameAndDeleteOrCreateNew(name);
         creature.setMaster(master);
         master.addServant(creature);
     }
 
-//    private Creature getCreatureByName(List<Creature> list, String name) {
-//        for (Creature c: list) {
-//            if(c.getName().equals(name)) {
-//                return c;
-//            }
-//        }
-//        return Creature.emptyObject;
-//    }
-//    private Creature getCreatureByName(List<Creature> list, String name) {
-//        for (Creature c: list) {
-//            if(c.getName().equals(name)) {
-//                return c;
-//            } else {
-//                return getCreatureByName(c.getServants(), name);
-//            }
-//        }
-//        return Creature.emptyObject;
-//    }
-//    private Creature getCreatureByName(List<Creature> list, String name) {
-//        log.info("********** \n" + list);
-//        for (Creature c: list) {
-//            boolean flag = c.getName().equals(name);
-//            log.info("*** c.name= " + c.getName() + " == name= " + name + " - " + flag);
-//            if(flag) {
-//                return c;
-//            }
-//
-//            if(!c.getServants().isEmpty()) {
-//                return getCreatureByName(c.getServants(), name);
-//            }
-//        }
-//        return Creature.emptyObject;
-//    }
-//    private Creature getCreatureByNameOrCreateNew(List<Creature> list, String name) {
-////        log.info("********** \n" + list);
-//        for (Creature c: list) {
-//            boolean flag = c.getName().equals(name);
-//            log.info("*** c.name= " + c.getName() + " == name= " + name + " - " + flag);
-//            if(flag) {
-//                return c;
-//            }
-//
-//            if(!c.getServants().isEmpty()) {
-//                return getCreatureByNameOrCreateNew(c.getServants(), name);
-//            }
-//        }
-//        return new Creature(name);
-//    }
-    private Creature getCreatureByNameOrCreateNew(List<Creature> list, String name) {
+    private Creature getCreatureInCreaturesTempByNameOrCreateNewAndAdd(String name) {
+        Creature creature = getCreatureByName(creaturesTemp, name);
+        if(creature.equals(Creature.emptyObject)) {
+            creature = new Creature(name);
+            creaturesTemp.add(creature);
+        }
+        return creature;
+    }
+
+    private Creature getCreatureInCreaturesTempByNameAndDeleteOrCreateNew(String name) {
+        Creature creature = getCreatureByName(creaturesTemp, name);
+        if(creature.equals(Creature.emptyObject)) {
+            creature = new Creature(name);
+        } else {
+            creaturesTemp.remove(creature);
+        }
+        return creature;
+    }
+
+    private Creature getCreatureByName(List<Creature> list, String name) {
         Creature out = Creature.emptyObject;
         for (Creature c: list) {
             boolean flag = c.getName().equals(name);
-            log.info("*** c.name= " + c.getName() + " == name= " + name + " - " + flag);
             if(flag) {
                 return c;
             }
-
             if(!c.getServants().isEmpty()) {
-                out = getCreatureByNameOrCreateNew(c.getServants(), name);
+                out = getCreatureByName(c.getServants(), name);
                 if(!out.equals(Creature.emptyObject)) {
                     return out;
                 }
