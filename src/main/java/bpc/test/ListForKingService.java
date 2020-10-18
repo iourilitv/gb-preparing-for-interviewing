@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class ListForKingService {
-    private final Logger log = Logger.getLogger("Test");
+    private final Logger log = Logger.getLogger(ListForKingService.class.getName());
 
     private final String PRIMARY_REGEX = ":";
     private final String SECONDARY_REGEX = ",";
@@ -16,7 +16,6 @@ public class ListForKingService {
     private final Creature king = new Creature("King", creatures);
 
     public ListForKingService(List<String> pollResults) {
-        king.setMaster(Creature.emptyObject);
         fillCreaturesTemp(pollResults);
         fillAndSortCreatures();
     }
@@ -33,7 +32,7 @@ public class ListForKingService {
 
     private void fillAndSortCreatures() {
         creaturesTemp.forEach(creature -> {
-            if(creature.getMaster().equals(Creature.emptyObject)) {
+            if(creature.getMaster() == null) {
                 creature.setMaster(king);
                 king.getServants().add(creature);
             }
@@ -48,12 +47,6 @@ public class ListForKingService {
             list.forEach(c -> sortList(c.getServants()));
         }
     }
-//    private void sortList(List<Creature> list) {
-//        if(!list.isEmpty()) {
-//            list.sort(CreaturesComparator.getInstance());
-//            list.forEach(c -> sortList(c.getServants()));
-//        }
-//    }
 
     private void extractCreaturesAndAddToCreaturesTemp(String subList) {
         String[] ar = subList.split(PRIMARY_REGEX);
@@ -74,7 +67,7 @@ public class ListForKingService {
 
     private Creature getCreatureInCreaturesTempByNameOrCreateNewAndAdd(String name) {
         Creature creature = getCreatureByName(creaturesTemp, name);
-        if(creature.equals(Creature.emptyObject)) {
+        if(creature == null) {
             creature = new Creature(name);
             creaturesTemp.add(creature);
         }
@@ -83,7 +76,7 @@ public class ListForKingService {
 
     private Creature getCreatureInCreaturesTempByNameAndDeleteOrCreateNew(String name) {
         Creature creature = getCreatureByName(creaturesTemp, name);
-        if(creature.equals(Creature.emptyObject)) {
+        if(creature == null) {
             creature = new Creature(name);
         } else {
             creaturesTemp.remove(creature);
@@ -92,20 +85,19 @@ public class ListForKingService {
     }
 
     private Creature getCreatureByName(List<Creature> list, String name) {
-        Creature out = Creature.emptyObject;
         for (Creature c: list) {
             boolean flag = c.getName().equals(name);
             if(flag) {
                 return c;
             }
             if(!c.getServants().isEmpty()) {
-                out = getCreatureByName(c.getServants(), name);
-                if(!out.equals(Creature.emptyObject)) {
+                Creature out = getCreatureByName(c.getServants(), name);
+                if(out != null) {
                     return out;
                 }
             }
         }
-        return out;
+        return null;
     }
 
     public String getCreatureStringForPrint(Creature creature) {
