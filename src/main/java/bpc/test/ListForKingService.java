@@ -1,8 +1,6 @@
 package bpc.test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ListForKingService {
@@ -11,11 +9,12 @@ public class ListForKingService {
     private final String PRIMARY_REGEX = ":";
     private final String SECONDARY_REGEX = ",";
 
-    private final List<Creature> creaturesTemp = new ArrayList<>();
-    private final List<Creature> creatures = new ArrayList<>();
-    private final Creature king = new Creature("King", creatures);
+    private final Set<Creature> creaturesTemp = new TreeSet<>();
+    private final Set<Creature> creatures = new TreeSet<>();
+    private final Creature king = new Creature("King");
 
     public ListForKingService(List<String> pollResults) {
+        king.setServants(creatures);
         fillCreaturesTemp(pollResults);
         fillAndSortCreatures();
     }
@@ -37,15 +36,7 @@ public class ListForKingService {
                 king.getServants().add(creature);
             }
         });
-        sortList(creatures);
         log.info("*** creatures= " + creatures);
-    }
-
-    private void sortList(List<Creature> list) {
-        if(!list.isEmpty()) {
-            Collections.sort(list);
-            list.forEach(c -> sortList(c.getServants()));
-        }
     }
 
     private void extractCreaturesAndAddToCreaturesTemp(String subList) {
@@ -84,7 +75,7 @@ public class ListForKingService {
         return creature;
     }
 
-    private Creature getCreatureByName(List<Creature> list, String name) {
+    private Creature getCreatureByName(Set<Creature> list, String name) {
         for (Creature c: list) {
             boolean flag = c.getName().equals(name);
             if(flag) {
@@ -105,7 +96,7 @@ public class ListForKingService {
         return getStringBuilderForPrint(creature.getServants(), builder, 1).toString();
     }
 
-    private StringBuilder getStringBuilderForPrint(List<Creature> list, StringBuilder builder, int tabCounter) {
+    private StringBuilder getStringBuilderForPrint(Set<Creature> list, StringBuilder builder, int tabCounter) {
         for (Creature c: list) {
             for (int i = 0; i < tabCounter; i++) {
                 builder.append("\t");

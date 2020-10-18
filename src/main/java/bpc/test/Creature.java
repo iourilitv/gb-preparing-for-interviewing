@@ -3,8 +3,8 @@ package bpc.test;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Getter
 @Setter
@@ -12,16 +12,11 @@ public class Creature implements Comparable<Creature> {
 
     private final String name;
     private Creature master;
-    private final List<Creature> servants;
+    private Set<Creature> servants;
 
     public Creature(String name) {
         this.name = name;
-        servants = new ArrayList<>();
-    }
-
-    public Creature(String name, List<Creature> servants) {
-        this.name = name;
-        this.servants = servants;
+        servants = new TreeSet<>();
     }
 
     @Override
