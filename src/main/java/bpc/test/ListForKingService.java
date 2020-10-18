@@ -12,7 +12,6 @@ public class ListForKingService {
 
     private final List<Creature> creaturesTemp = new ArrayList<>();
     private final List<Creature> creatures = new ArrayList<>();
-    private final ListForKing listForKing = new ListForKing();
     private final Creature king = new Creature("King", creatures);
 
     public ListForKingService(List<String> pollResults) {
@@ -102,9 +101,26 @@ public class ListForKingService {
         return out;
     }
 
-    public String getStringForPrint() {
-        StringBuilder builder = new StringBuilder("\n" + king.getName() + "\n");
-        return listForKing.getStringBuilderForPrint(king.getServants(), builder, 1).toString();
+    public String getCreatureStringForPrint(Creature creature) {
+        StringBuilder builder = new StringBuilder("\n" + creature.getName() + "\n");
+        return getStringBuilderForPrint(creature.getServants(), builder, 1).toString();
     }
 
+    private StringBuilder getStringBuilderForPrint(List<Creature> list, StringBuilder builder, int tabCounter) {
+        for (Creature c: list) {
+            for (int i = 0; i < tabCounter; i++) {
+                builder.append("\t");
+            }
+            builder.append(c.getName()).append("\n");
+            if(!c.getServants().isEmpty()) {
+                getStringBuilderForPrint(c.getServants(), builder, ++tabCounter);
+                tabCounter--;
+            }
+        }
+        return builder;
+    }
+
+    public Creature getKing() {
+        return king;
+    }
 }

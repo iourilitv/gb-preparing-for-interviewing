@@ -61,10 +61,10 @@ public class Test {
 }
 
 class UnluckyVassal {
-    private final Logger log = Logger.getLogger("Test");
+    private final Logger log = Logger.getLogger(UnluckyVassal.class.getName());
     public void printReportForKing(List<String> pollResults) {
         ListForKingService service = new ListForKingService(pollResults);
-        log.info(service.getStringForPrint());
+        log.info(service.getCreatureStringForPrint(service.getKing()));
     }
 }
 //окт 17, 2020 5:59:48 AM bpc.test.ListForKingService fillAndSortCreatures
