@@ -9,86 +9,72 @@ public class ListForKingService {
     private final String PRIMARY_REGEX = ":";
     private final String SECONDARY_REGEX = ",";
 
-    private final Set<Creature> creaturesTemp = new TreeSet<>();
-    private final Set<Creature> creatures = new TreeSet<>();
-    private final Creature king = new Creature("King");
+    private final Set<Creature> creatures;
+    private final Creature king;
 
     public ListForKingService(List<String> pollResults) {
-        king.setServants(creatures);
-        fillCreaturesTemp(pollResults);
-        fillAndSortCreatures();
+        creatures = new TreeSet<>();
+        king = new Creature("King");
+        fillCreatures(pollResults);
+        setMasterServantsInCreaturesElements(pollResults);
+        setKingAsMasterInCreatureElements();
     }
 
-    private void fillCreaturesTemp(List<String> pollResults) {
-        pollResults.forEach(s -> {
-            if(s.contains(PRIMARY_REGEX)) {
-                extractCreaturesAndAddToCreaturesTemp(s);
+    private void fillCreatures(List<String> pollResults) {
+        pollResults.forEach(this::extractCreaturesAndAddToCreatures);
+    }
+
+    private void setMasterServantsInCreaturesElements(List<String> pollResults) {
+        pollResults.forEach(this::extractCreaturesAndSetMasterAndServants);
+    }
+
+    private void setKingAsMasterInCreatureElements() {
+        creatures.forEach(c -> {
+            if(c.getMaster() == null) {
+                c.setMaster(king);
+                king.getServants().add(c);
+            }
+        });
+    }
+
+    private void extractCreaturesAndAddToCreatures(String subList) {
+        String[] ar = subList.split("[" + PRIMARY_REGEX + SECONDARY_REGEX + "]");
+        for (String s : ar) {
+            if (getCreatureByName(creatures, s.trim()) == null) {
+                creatures.add(new Creature(s.trim()));
+            }
+        }
+    }
+
+    private void extractCreaturesAndSetMasterAndServants(String subList) {
+        String[] ar = subList.split("[" + PRIMARY_REGEX + SECONDARY_REGEX + "]");
+        if(ar.length < 1) {
+            return;
+        }
+        for (int i = 1; i < ar.length; i++) {
+            Creature master = getCreatureByName(creatures, ar[0].trim());
+            Creature servant = getCreatureByName(creatures, ar[i].trim());
+            if(master != null && servant != null) {
+                servant.setMaster(master);
+                master.getServants().add(servant);
             } else {
-                getCreatureInCreaturesTempByNameOrCreateNewAndAdd(s.trim());
+                //FIXME
+//                throw new NotFoundException("Creature not found!");
             }
-        });
-    }
-
-    private void fillAndSortCreatures() {
-        creaturesTemp.forEach(creature -> {
-            if(creature.getMaster() == null) {
-                creature.setMaster(king);
-                king.getServants().add(creature);
-            }
-        });
-        log.info("*** creatures= " + creatures);
-    }
-
-    private void extractCreaturesAndAddToCreaturesTemp(String subList) {
-        String[] ar = subList.split(PRIMARY_REGEX);
-        Creature primary = getCreatureInCreaturesTempByNameOrCreateNewAndAdd(ar[0].trim());
-
-                subList = ar[1].trim();
-        ar = subList.split(SECONDARY_REGEX);
-        for (String name : ar) {
-            createServantAndAddToMasterServants(primary, name.trim());
         }
-    }
-
-    private void createServantAndAddToMasterServants(Creature master, String name) {
-        Creature creature = getCreatureInCreaturesTempByNameAndDeleteOrCreateNew(name);
-        creature.setMaster(master);
-        master.addServant(creature);
-    }
-
-    private Creature getCreatureInCreaturesTempByNameOrCreateNewAndAdd(String name) {
-        Creature creature = getCreatureByName(creaturesTemp, name);
-        if(creature == null) {
-            creature = new Creature(name);
-            creaturesTemp.add(creature);
-        }
-        return creature;
-    }
-
-    private Creature getCreatureInCreaturesTempByNameAndDeleteOrCreateNew(String name) {
-        Creature creature = getCreatureByName(creaturesTemp, name);
-        if(creature == null) {
-            creature = new Creature(name);
-        } else {
-            creaturesTemp.remove(creature);
-        }
-        return creature;
     }
 
     private Creature getCreatureByName(Set<Creature> list, String name) {
         for (Creature c: list) {
-            boolean flag = c.getName().equals(name);
-            if(flag) {
+            if(c.getName().equals(name)) {
                 return c;
-            }
-            if(!c.getServants().isEmpty()) {
-                Creature out = getCreatureByName(c.getServants(), name);
-                if(out != null) {
-                    return out;
-                }
             }
         }
         return null;
+    }
+
+    public Creature getKing() {
+        return king;
     }
 
     public String getCreatureStringForPrint(Creature creature) {
@@ -108,9 +94,5 @@ public class ListForKingService {
             }
         }
         return builder;
-    }
-
-    public Creature getKing() {
-        return king;
     }
 }

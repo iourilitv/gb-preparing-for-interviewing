@@ -24,10 +24,6 @@ public class Creature implements Comparable<Creature> {
         return this.getName().compareToIgnoreCase(o.getName());
     }
 
-    public void addServant(Creature creature) {
-        servants.add(creature);
-    }
-
     @Override
     public String toString() {
         String masterName = "";
