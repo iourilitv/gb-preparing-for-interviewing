@@ -1,5 +1,7 @@
 package bpc.test;
 
+import javassist.NotFoundException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -53,7 +55,7 @@ public class Test {
             "просветленный Антон"
     );
 
-    public static void main(String... args) {
+    public static void main(String... args) throws NotFoundException {
         UnluckyVassal unluckyVassal = new UnluckyVassal();
 
         unluckyVassal.printReportForKing(pollResults);
@@ -62,7 +64,7 @@ public class Test {
 
 class UnluckyVassal {
     private final Logger log = Logger.getLogger(UnluckyVassal.class.getName());
-    public void printReportForKing(List<String> pollResults) {
+    public void printReportForKing(List<String> pollResults) throws NotFoundException {
         ListForKingService service = new ListForKingService(pollResults);
         log.info(service.getCreatureStringForPrint(service.getKing()));
     }

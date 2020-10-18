@@ -19,6 +19,13 @@
             <version>1.16.20</version>
         </dependency>
 
+        <!-- To handle the import javassist.NotFoundException in the ListForKingService class -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.24.0-GA</version>
+        </dependency>
+
     </dependencies>
 
     <build>

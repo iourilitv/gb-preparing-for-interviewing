@@ -1,5 +1,7 @@
 package bpc.test;
 
+import javassist.NotFoundException;
+
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -12,7 +14,7 @@ public class ListForKingService {
     private final Set<Creature> creatures;
     private final Creature king;
 
-    public ListForKingService(List<String> pollResults) {
+    public ListForKingService(List<String> pollResults) throws NotFoundException {
         creatures = new TreeSet<>();
         king = new Creature("King");
         fillCreatures(pollResults);
@@ -24,8 +26,10 @@ public class ListForKingService {
         pollResults.forEach(this::extractCreaturesAndAddToCreatures);
     }
 
-    private void setMasterServantsInCreaturesElements(List<String> pollResults) {
-        pollResults.forEach(this::extractCreaturesAndSetMasterAndServants);
+    private void setMasterServantsInCreaturesElements(List<String> pollResults) throws NotFoundException {
+        for (String subList : pollResults) {
+            extractCreaturesAndSetMasterAndServants(subList);
+        }
     }
 
     private void setKingAsMasterInCreatureElements() {
@@ -46,7 +50,7 @@ public class ListForKingService {
         }
     }
 
-    private void extractCreaturesAndSetMasterAndServants(String subList) {
+    private void extractCreaturesAndSetMasterAndServants(String subList) throws NotFoundException {
         String[] ar = subList.split("[" + PRIMARY_REGEX + SECONDARY_REGEX + "]");
         if(ar.length < 1) {
             return;
@@ -58,8 +62,7 @@ public class ListForKingService {
                 servant.setMaster(master);
                 master.getServants().add(servant);
             } else {
-                //FIXME
-//                throw new NotFoundException("Creature not found!");
+                throw new NotFoundException("Creature not found!");
             }
         }
     }
