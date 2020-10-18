@@ -1,6 +1,7 @@
 package bpc.test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -43,10 +44,16 @@ public class ListForKingService {
 
     private void sortList(List<Creature> list) {
         if(!list.isEmpty()) {
-            list.sort(CreaturesComparator.getInstance());
+            Collections.sort(list);
             list.forEach(c -> sortList(c.getServants()));
         }
     }
+//    private void sortList(List<Creature> list) {
+//        if(!list.isEmpty()) {
+//            list.sort(CreaturesComparator.getInstance());
+//            list.forEach(c -> sortList(c.getServants()));
+//        }
+//    }
 
     private void extractCreaturesAndAddToCreaturesTemp(String subList) {
         String[] ar = subList.split(PRIMARY_REGEX);
