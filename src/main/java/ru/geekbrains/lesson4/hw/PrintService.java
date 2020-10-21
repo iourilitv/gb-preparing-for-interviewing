@@ -1,37 +1,48 @@
 package ru.geekbrains.lesson4.hw;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PrintService {
     enum printSchemas {
         schema1, schema2, schema3, schema4
     }
+    enum printColumns {
+        movie_name, allQuantities, avgQuantitiesForSession, schema4
+    }
 
     private final RequestManager requestManager;
-//    private final List<HashMap<String, Object>> allSessions;
+    private final Map<String, Object> printMap = new HashMap<>();
+    private final List<Integer> ids;
 
     public PrintService() {
         this.requestManager =  new RequestManager();
-//        this.allSessions = requestManager.getAllSessionsJoinMoviesAndTickets();
+        this.ids = requestManager.getMoviesIdList();
+        System.out.println(ids);
     }
 
     public void print(PrintService.printSchemas printSchema) {
-        Map<String, Object> printMap = new HashMap<>();
+
         if(printSchema.equals(printSchemas.schema3)) {
-            List<Integer> ids = requestManager.getMoviesIdList();
-            System.out.println(ids);
             ids.forEach(i -> {
                 List<HashMap<String, Object>> sessions = requestManager.getSessionsJoinMoviesAndTicketsByMovieId(i);
-                System.out.println(sessions);
+
+                Set<Integer> sessionsIds = new TreeSet<>();
+                for (HashMap<String, Object> s : sessions) {
+                    Integer o = (Integer) s.get(RequestManager.columnLabels.id.name());
+                    sessionsIds.add(o);
+                }
                 int allQuantities = sessions.stream().mapToInt(s -> (int) s.get(RequestManager.columnLabels.quantity.name())).sum();
-                System.out.println(allQuantities);
-                printMap.put(RequestManager.columnLabels.movie_name.name(), sessions.get(0).get(RequestManager.columnLabels.movie_name.name()));
-                printMap.put("allQuantities", allQuantities);
-                System.out.println(printMap);
+
+                printMap.put(printColumns.movie_name.name(), sessions.get(0).get(RequestManager.columnLabels.movie_name.name()));
+                printMap.put(printColumns.allQuantities.name(), allQuantities);
+                printMap.put(printColumns.avgQuantitiesForSession.name(), allQuantities / sessionsIds.size());
+                System.out.println("movie: " + printMap);
+
             });
+
         }
     }
+
+
 
 }
