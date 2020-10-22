@@ -44,9 +44,7 @@ public class ListForKingService {
     private void extractCreaturesAndAddToCreatures(String subList) {
         String[] ar = subList.split("[" + PRIMARY_REGEX + SECONDARY_REGEX + "]");
         for (String s : ar) {
-            if (getCreatureByName(creatures, s.trim()) == null) {
-                creatures.add(new Creature(s.trim()));
-            }
+            creatures.add(new Creature(s.trim()));
         }
     }
 
