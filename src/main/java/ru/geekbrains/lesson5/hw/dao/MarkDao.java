@@ -9,7 +9,6 @@ import ru.geekbrains.lesson5.hw.persistence.HibernateUtil;
 import java.util.List;
 
 public class MarkDao implements IEntityDao<Mark, Short> {
-
     private Session currentSession;
     private Transaction currentTransaction;
 

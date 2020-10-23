@@ -1,5 +1,6 @@
 package ru.geekbrains.lesson5.hw.services;
 
+import org.hibernate.Session;
 import ru.geekbrains.lesson5.hw.dao.StudentDao;
 import ru.geekbrains.lesson5.hw.entities.Student;
 import ru.geekbrains.lesson5.hw.services.interfaces.IEntityService;
@@ -18,6 +19,20 @@ public class StudentService implements IEntityService<Student, Integer> {
         dao.openCurrentSessionWithTransaction();
         dao.persist(entity);
         dao.closeCurrentSessionWithTransaction();
+    }
+
+    public void persistAll(List<Student> entities) {
+        entities.forEach(this::persist);
+    }
+
+    public void persistAllInOneSession(List<Student> entities) {
+        Session session = dao.openCurrentSession();
+        for (Student entity : entities) {
+            session.beginTransaction();
+            dao.persist(entity);
+            session.getTransaction().commit();
+        }
+        dao.closeCurrentSession();
     }
 
     @Override

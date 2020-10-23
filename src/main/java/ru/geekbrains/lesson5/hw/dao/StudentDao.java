@@ -9,12 +9,8 @@ import ru.geekbrains.lesson5.hw.persistence.HibernateUtil;
 import java.util.List;
 
 public class StudentDao implements IEntityDao<Student, Integer> {
-    protected Session currentSession;
-    protected Transaction currentTransaction;
-
-    public StudentDao() {
-
-    }
+    private Session currentSession;
+    private Transaction currentTransaction;
 
     @Override
     public void persist(Student student) {
