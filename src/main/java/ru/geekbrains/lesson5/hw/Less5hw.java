@@ -25,6 +25,9 @@ public class Less5hw {
     public static void main(String[] args) {
         StudentService studentService = new StudentService();
 
+        studentService.deleteAll();
+        System.out.println("after deleteAll(). all students: " + studentService.findAll());
+
         MarkService markService = new MarkService();
         Mark mark = markService.findById((short) 1);
 
@@ -57,11 +60,31 @@ public class Less5hw {
         //after delete(student). student: null
         //after delete(student). all students: []
 
+        studentService.persist(student);
+        System.out.println("after persist(student) again. all students: " + studentService.findAll());
+        //after persist(student) again. all students: [Student{id=8, firstName='Yuriy', lastName='Litvinenko', mark=Mark{id=3, title='C'}}]
+
+        //**** Test duplication ****
+        Student student1 = Student.builder()
+                .firstName("Original student first name")
+                .lastName("Original student last name")
+                .mark(mark)
+                .build();
+        studentService.persist(student1);
+        System.out.println("after persist(student1). student: " + studentService.findById(student1.getId()));
+        System.out.println("after persist(student1). all students: " + studentService.findAll());
+        //after persist(student1). student: Student{id=9, firstName='Original student first name', lastName='Original student last name', mark=Mark{id=1, title='A'}}
+        //after persist(student1). all students: [Student{id=8, firstName='Yuriy', lastName='Litvinenko', mark=Mark{id=3, title='C'}}, Student{id=9, firstName='Original student first name', lastName='Original student last name', mark=Mark{id=1, title='A'}}]
+
+        //пытаемся сохранить дубликат(и имя и фамилия совпадают)
+        studentService.persist(student1);
+        //ERROR: Duplicate entry 'Original student first name-Original student last name' for key 'students.students_names_idx'
+
 //        speedTests(studentService);
 
-        System.out.println("before deleteAll(). all students: " + studentService.findAll());
-        studentService.deleteAll();
-        System.out.println("after deleteAll(). all students: " + studentService.findAll());
+//        System.out.println("before deleteAll(). all students: " + studentService.findAll());
+//        studentService.deleteAll();
+//        System.out.println("after deleteAll(). all students: " + studentService.findAll());
 
     }
 
