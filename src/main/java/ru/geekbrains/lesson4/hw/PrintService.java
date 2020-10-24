@@ -24,6 +24,16 @@ public class PrintService {
             System.out.println("******** " + printSchemas.schema3.name() + " **********");
             System.out.println(requestManager.getSchema3());
         }
+        if(printSchema.equals(printSchemas.schema4)) {
+            //4) число посетителей и кассовые сборы, сгруппированные по времени начала фильма:
+            //с 9 до 15,
+            //с 15 до 18,
+            //с 18 до 21,
+            //с 21 до 00:00
+            //(сколько посетителей пришло с 9 до 15 часов и т.д.).
+            System.out.println("******** " + printSchemas.schema4.name() + " **********");
+            System.out.println(requestManager.getSchema4());
+        }
     }
 
 }

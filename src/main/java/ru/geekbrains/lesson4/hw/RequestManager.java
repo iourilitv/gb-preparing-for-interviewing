@@ -32,6 +32,20 @@ public class RequestManager {
         return makeRequest(sql);
     }
 
+    public List<HashMap<String, Object>> getSchema4() {
+        String sql = "select (case when s.start between '09:00:00' and '14:59:59' then '09:00:00-14:59:59' else \n" +
+                "\t\t\t(case when s.start between '15:00:00' and '17:59:59' then '15:00:00-17:59:59' else \n" +
+                "\t\t\t\t (case when s.start between '18:00:00' and '20:59:59' then '18:00:00-20:59:59' else \n" +
+                "                 \t\t\t\t (case when s.start between '21:00:00' and '23:59:59' then '21:00:00-23:59:59' else 0 end)\n" +
+                "                 end)\n" +
+                "\t\t\tend)\n" +
+                "\t\tend) as period, \n" +
+                "\tsum(quantity) as qua_sum, sum(ticket_cost * quantity) as tickets_cost_sum from sessions as s\n" +
+                "\tjoin tickets as t on t.session_id = s.id\n" +
+                "    group by period;";
+        return makeRequest(sql);
+    }
+
     private List<HashMap<String, Object>> makeRequest(String sql) {
         List<HashMap<String, Object>> rows = new ArrayList<>();
         try {
