@@ -8,6 +8,16 @@ import java.util.List;
 public class RequestManager {
     private final Connection connection = new MySQLConnect().connect();
 
+    public List<HashMap<String, Object>> getSchema1() {
+        String sql = "select s.date, m.name as movie1, s.start, s.duration, s.stop, tab1.name as movie2, tab1.start, tab1.duration, tab1.stop from sessions as s \n" +
+                "\tjoin movies as m on s.movie_id = m.id \n" +
+                "    join (select s.date, m.name, s.start, s.duration, s.stop from sessions as s \n" +
+                "\t\tjoin movies as m on s.movie_id = m.id \n" +
+                "\t\torder by date, start) as tab1\n" +
+                "        where s.date = tab1.date and tab1.start < s.stop and s.start < tab1.start\n" +
+                "        order by s.date, s.start;";
+        return makeRequest(sql);
+    }
     public List<HashMap<String, Object>> getSchema3() {
         String sql = "select * from \n" +
                 "(select tab1.movie, sum(tab1.sess_qua_sum) as movie_qua_sum, avg(tab1.sess_qua_sum) as movie_sess_qua_avg, sum(tab1.ses_cost) as movie_cost_sum\n" +

@@ -12,7 +12,13 @@ public class PrintService {
     }
 
     public void print(printSchemas printSchema) {
-
+        if(printSchema.equals(printSchemas.schema2)) {
+            // 1) ошибки в расписании (фильмы накладываются друг на друга),
+            // отсортированные по возрастанию времени.
+            // Выводить надо колонки «фильм 1», «время начала», «длительность», «фильм 2», «время начала», «длительность»;
+            System.out.println("******** " + printSchemas.schema2.name() + " **********");
+            System.out.println(requestManager.getSchema1());
+        }
         if(printSchema.equals(printSchemas.schema3)) {
             // 3) список фильмов, для каждого — с указанием
             // - DONE название,
