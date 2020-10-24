@@ -7,23 +7,28 @@ import java.util.List;
 
 public class RequestManager {
     private final Connection connection = new MySQLConnect().connect();
-    enum columnLabels {
-        id, date, movie_id, start, duration, stop, ticket_cost, movie_name, ticket_id, quantity
-    }
 
-    public List<Integer> getMoviesIdList() {
-        String sql = "select id from movies;";
-        List<Integer> ids = new ArrayList<>();
-        makeRequest(sql).forEach(m -> ids.add((int)m.get("id")));
-        return ids;
-    }
-
-    public List<HashMap<String, Object>> getSessionsJoinMoviesAndTicketsByMovieId(int movieId) {
-        String sql = String.format("select s.*, m.name as " + columnLabels.movie_name.name() +
-                ", t.id as " + columnLabels.ticket_id.name() +
-                ", t.quantity as " + columnLabels.quantity.name() +
-                " from sessions as s join movies as m on s.movie_id = m.id join tickets as t on t.session_id = s.id" +
-                " where s.movie_id = '%d'", movieId);
+    public List<HashMap<String, Object>> getSchema3() {
+        String sql = "select * from \n" +
+                "(select tab1.movie, sum(tab1.sess_qua_sum) as movie_qua_sum, avg(tab1.sess_qua_sum) as movie_sess_qua_avg, sum(tab1.ses_cost) as movie_cost_sum\n" +
+                "\tfrom\n" +
+                "\t\t(select s.id as session_id, m.name as movie, sum(t.quantity) as sess_qua_sum, sum(t.quantity * s.ticket_cost) as ses_cost from sessions as s \n" +
+                "\t\t\tjoin movies as m on s.movie_id = m.id\n" +
+                "\t\t\tjoin tickets as t on t.session_id = s.id\n" +
+                "\t\t\tgroup by s.id) as tab1\n" +
+                "\t\tgroup by movie\n" +
+                "\t\torder by movie_cost_sum desc) as tab2\n" +
+                "union all\n" +
+                "select 'Total' as movie, sum(movie_qua_sum) as total_movie_qua, '' as movie_sess_qua_avg, sum(movie_cost_sum) as total_movie_cost \n" +
+                "\tfrom \n" +
+                "\t\t(select tab1.movie, sum(tab1.sess_qua_sum) as movie_qua_sum, avg(tab1.sess_qua_sum) as movie_sess_qua_avg, sum(tab1.ses_cost) as movie_cost_sum\n" +
+                "\t\t\tfrom\n" +
+                "\t\t\t\t(select s.id as session_id, m.name as movie, sum(t.quantity) as sess_qua_sum, sum(t.quantity * s.ticket_cost) as ses_cost from sessions as s \n" +
+                "\t\t\t\t\tjoin movies as m on s.movie_id = m.id\n" +
+                "\t\t\t\t\tjoin tickets as t on t.session_id = s.id\n" +
+                "\t\t\t\t\tgroup by s.id) as tab1\n" +
+                "\t\t\t\tgroup by movie\n" +
+                "\t\t\t\torder by movie_cost_sum desc) as tab3;";
         return makeRequest(sql);
     }
 
