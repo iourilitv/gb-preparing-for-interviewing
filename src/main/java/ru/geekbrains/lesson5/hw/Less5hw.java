@@ -78,7 +78,8 @@ public class Less5hw {
 
         //пытаемся сохранить дубликат(и имя и фамилия совпадают)
         studentService.persist(student1);
-        //ERROR: Duplicate entry 'Original student first name-Original student last name' for key 'students.students_names_idx'
+        // OK
+        // ERROR: Duplicate entry 'Original student first name-Original student last name' for key 'students.students_names_idx'
 
 //        speedTests(studentService);
 

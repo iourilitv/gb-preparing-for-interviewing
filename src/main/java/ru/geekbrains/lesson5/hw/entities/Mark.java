@@ -16,7 +16,7 @@ public class Mark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private short id;
+    private Short id;
 
     @Column(name = "title")
     private String title;
