@@ -16,6 +16,11 @@ public abstract class AbstractEntityDao<T, Id extends Serializable> implements I
     private static SessionFactory sessionFactory;
     protected Session currentSession;
     protected Transaction currentTransaction;
+    protected Class<T> tClass;
+
+    public AbstractEntityDao(Class<T> cl) {
+        this.tClass = cl;
+    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
@@ -41,20 +46,16 @@ public abstract class AbstractEntityDao<T, Id extends Serializable> implements I
         currentSession.delete(entity);
     }
 
-    //TODO How to replace Student.class with T.class? T.class does not work!
-    public abstract T findById(Id id);
-//    @Override
-//    public Student findById(Integer id) {
-//        return currentSession.get(Student.class, id);
-//    }
+    @Override
+    public T findById(Id id) {
+        return currentSession.get(tClass, id);
+    }
 
-    //TODO How to replace Student.class with T.class? T.class does not work!
-    public abstract List<T> findAll();
-//    @Override
-//    @SuppressWarnings("unchecked")
-//    public List<Student> findAll() {
-//        return (List<Student>) currentSession.createQuery("from Student").list();
-//    }
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<T> findAll() {
+        return (List<T>) currentSession.createQuery("from " + tClass.getSimpleName()).list();
+    }
 
     @Override
     public void deleteAll() {
