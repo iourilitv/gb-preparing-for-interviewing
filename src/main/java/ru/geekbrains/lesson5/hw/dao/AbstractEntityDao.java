@@ -1,34 +1,20 @@
 package ru.geekbrains.lesson5.hw.dao;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.geekbrains.lesson5.hw.dao.interfaces.IEntityDao;
+import ru.geekbrains.lesson5.hw.utils.HibernateUtil;
 
 import java.io.Serializable;
 import java.util.List;
 
 public abstract class AbstractEntityDao<T, Id extends Serializable> implements IEntityDao<T, Id> {
-    private static SessionFactory sessionFactory;
     protected Session currentSession;
     protected Transaction currentTransaction;
     protected Class<T> tClass;
 
     public AbstractEntityDao(Class<T> cl) {
         this.tClass = cl;
-    }
-
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder().configure().build();
-            Metadata metadata = new MetadataSources(standardRegistry).getMetadataBuilder().build();
-            sessionFactory = metadata.getSessionFactoryBuilder().build();
-        }
-        return sessionFactory;
     }
 
     @Override
@@ -63,12 +49,12 @@ public abstract class AbstractEntityDao<T, Id extends Serializable> implements I
     }
 
     public Session openCurrentSession() {
-        currentSession = getSessionFactory().openSession();
+        currentSession = HibernateUtil.getSessionFactory().openSession();
         return currentSession;
     }
 
     public Session openCurrentSessionWithTransaction() {
-        currentSession = getSessionFactory().openSession();
+        currentSession = HibernateUtil.getSessionFactory().openSession();
         currentTransaction = currentSession.beginTransaction();
         return currentSession;
     }
